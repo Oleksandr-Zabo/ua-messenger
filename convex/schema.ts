@@ -52,6 +52,6 @@ export default defineSchema({
   })
     .index("by_user", ["userId"])
     .index("by_post", ["postId"])
-    .index("by_both", ["userId", "postId"]),
+    .index("by_users_and_post", ["userId", "postId"]),
 
 });

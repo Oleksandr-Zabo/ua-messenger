@@ -1,42 +1,48 @@
 import { COLORS } from "@/constants/theme";
 import { useAuth } from "@clerk/clerk-expo";
-import { Link } from "expo-router/build/link/Link";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import {styles} from "@/styles/feed.styles";
+import Ionicons from "@expo/vector-icons/build/Ionicons";
+import { STORIES } from "@/constants/mock-data";
+import React from "react";
+import { Story } from "@/components/Story";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Post } from "@/components/Post";
+
 export default function IndexTab() {
   const {signOut} = useAuth();
+
+  const posts = useQuery(api.posts.getFeedPosts, {});
+
   return (
-    <View
-      style={styles.container}
-    >
-      <Text style={styles.title}>Home Screen</Text>
-      <TouchableOpacity style={styles.btn} onPress={() => signOut()}>
-        <Text style={styles.btnText}>Вийти</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>ua-messenger</Text>
+        <TouchableOpacity onPress={() => signOut()}>
+          <Ionicons name="log-out-outline" size={24} color={COLORS.white} />
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* STORIES */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.storiesContainer}>
+          {STORIES.map((story) => (
+            <Story key={story.id} story={story} />
+          ))}
+        </ScrollView>
+ 
+        {posts?.map((post) => {
+          return (
+             <Post key={post._id} post={post} />
+          );
+        })}
+
+      </ScrollView>
+
      </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    flex: 1,
-  },
-    title: {
-    color: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    fontSize: 24,
-  },
-  btn: {
-    padding: 10,
-    backgroundColor: COLORS.background,
-    borderRadius: 5,
-    marginVertical: 20,
-  },
-  btnText: {
-    color: COLORS.primary,
-    fontSize: 18,
-    fontWeight: '600',
-  },
-
-
-});

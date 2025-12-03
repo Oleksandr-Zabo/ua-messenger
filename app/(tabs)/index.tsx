@@ -1,19 +1,24 @@
 import { COLORS } from "@/constants/theme";
 import { useAuth } from "@clerk/clerk-expo";
-import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView, FlatList } from "react-native";
 import {styles} from "@/styles/feed.styles";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
-import { STORIES } from "@/constants/mock-data";
 import React from "react";
-import { Story } from "@/components/Story";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Post } from "@/components/Post";
+import { Loader } from "@/components/Loader";
+import { NoPostsFound } from "@/components/NotPostsFound";
+import { StoriesSection } from "@/components/Stories";
 
 export default function IndexTab() {
   const {signOut} = useAuth();
 
   const posts = useQuery(api.posts.getFeedPosts, {});
+
+  if(posts === undefined) return <Loader />;
+  
+  if(posts.length === 0) return <NoPostsFound />;
 
   return (
     <View style={styles.container}>
@@ -24,22 +29,18 @@ export default function IndexTab() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* STORIES */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.storiesContainer}>
-          {STORIES.map((story) => (
-            <Story key={story.id} story={story} />
-          ))}
-        </ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} horizontal={false}>
+        
  
-        {posts?.map((post) => {
-          return (
-             <Post key={post._id} post={post} />
-          );
-        })}
+        {/* POSTS */}
+        <FlatList 
+          data={posts}
+          keyExtractor={(item) => String(item._id)}
+          showsVerticalScrollIndicator = {false}
+          contentContainerStyle={{ paddingBottom: 50 }}
+          renderItem ={({item}) => <Post post={item} />}
+          ListHeaderComponent={<StoriesSection /> }
+        />
 
       </ScrollView>
 

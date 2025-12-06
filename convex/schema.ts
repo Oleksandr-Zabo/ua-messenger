@@ -2,6 +2,7 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 // @snippet start schema
 export default defineSchema({
+  //users table
   users: defineTable({
     username: v.string(),
     fullname: v.string(),
@@ -13,6 +14,7 @@ export default defineSchema({
     posts: v.number(),
     clerkId: v.string(),
   }).index("by_clerk_id", ["clerkId"]),
+  //posts table
   posts: defineTable({
     userId: v.id("users"),
     imageUrl: v.string(),
@@ -21,17 +23,20 @@ export default defineSchema({
     likes: v.number(),
     comments: v.number(),
   }).index("by_user", ["userId"]),
+  //likes table
   likes: defineTable({
     userId: v.id("users"),
     postId: v.id("posts"),
   })
     .index("by_post", ["postId"])
     .index("by_user_and_post", ["userId", "postId"]),
+  //comments table
   comments: defineTable({
     userId: v.id("users"),
     postId: v.id("posts"),
     content: v.string(),
   }).index("by_post", ["postId"]),
+  //follows table
   follows: defineTable({
     followerId: v.id("users"),
     followingId: v.id("users"),
@@ -39,6 +44,7 @@ export default defineSchema({
     .index("by_follower", ["followerId"])
     .index("by_following", ["followingId"])
     .index("by_both", ["followerId", "followingId"]),
+  //notifications table
   notifications: defineTable({
     receiverId: v.id("users"),
     senderId: v.id("users"),
@@ -46,6 +52,7 @@ export default defineSchema({
     postId: v.optional(v.id("posts")),
     commentId: v.optional(v.id("comments")),
   }).index("by_receiver", ["receiverId"]),
+  //bookmarks table
   bookmarks: defineTable({
     userId: v.id("users"),
     postId: v.id("posts"),

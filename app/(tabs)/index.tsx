@@ -29,20 +29,15 @@ export default function IndexTab() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} horizontal={false}>
-        
- 
-        {/* POSTS */}
-        <FlatList 
-          data={posts}
-          keyExtractor={(item) => String(item._id)}
-          showsVerticalScrollIndicator = {false}
-          contentContainerStyle={{ paddingBottom: 50 }}
-          renderItem ={({item}) => <Post post={item} />}
-          ListHeaderComponent={<StoriesSection /> }
-        />
-
-      </ScrollView>
+      {/* POSTS */}
+      <FlatList 
+        data={posts}
+        keyExtractor={(item) => String(item._id)}
+        showsVerticalScrollIndicator = {false}
+        contentContainerStyle={{ paddingBottom: 50 }}
+        renderItem ={({item}) => <Post post={item} />}
+        ListHeaderComponent={<StoriesSection /> }
+      />
 
      </View>
   );

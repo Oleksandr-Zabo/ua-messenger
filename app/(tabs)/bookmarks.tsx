@@ -1,27 +1,65 @@
-import { Link } from "expo-router/build/link/Link";
-import { Text, View, StyleSheet } from "react-native";
+import { ScrollView, Text, View } from "react-native";
+import { Image } from "expo-image";
+import {styles} from "@/styles/feed.styles"
+import { useConvexAuth, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Loader } from "@/components/Loader";
+import { COLORS } from "@/constants/theme";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function BookMarkScreen() {
+    const { isAuthenticated } = useConvexAuth();
+
+  const bookmarks = useQuery(api.bookmarks.getBookmarkedPosts, isAuthenticated ? {} : 'skip');
+
+  if(bookmarks === undefined) return <Loader />;
+  if(bookmarks.length === 0) return <NoBookmarksFound />;
+
   return (
     <View
       style={styles.container}
     >
-      <Link style={styles.link} href="/">Home</Link>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Bookmarks</Text>
+      </View>
+
+      {/* Bookmarked Posts */}
+      <ScrollView contentContainerStyle={{ padding: 8, flexDirection: 'row', flexWrap: 'wrap' }}>
+        {bookmarks.map((post) => {
+          if (!post) return null;
+          return (
+            <View key={post._id} style={{ padding: 2, width: '33.33%' }}>
+              <Image
+                source={{ uri: post.imageUrl }}
+                style={{ width: '100%', aspectRatio: 1 }}
+                contentFit="cover"
+                transition={200}
+                cachePolicy={'memory-disk'}
+              />
+            </View>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  link: {
-    marginVertical: 20,
-    color: 'blue',
-    backgroundColor: 'lightgray',
-    padding: 10,
-    borderRadius: 5,
-  },
 
-});
+function NoBookmarksFound() {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: COLORS.background,
+      }}
+    >
+      <MaterialIcons name="collections-bookmark" size={75} color={COLORS.primary} />
+ 
+      <Text style={{ color: COLORS.primary, fontSize: 24 }}>
+        No bookmarked posts yet
+      </Text>
+    </View>
+  );
+}

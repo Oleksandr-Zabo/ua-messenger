@@ -4,7 +4,7 @@ import { Text, View, TouchableOpacity, ScrollView, FlatList } from "react-native
 import {styles} from "@/styles/feed.styles";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import React from "react";
-import { useQuery } from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Post } from "@/components/Post";
 import { Loader } from "@/components/Loader";
@@ -14,7 +14,9 @@ import { StoriesSection } from "@/components/Stories";
 export default function IndexTab() {
   const {signOut} = useAuth();
 
-  const posts = useQuery(api.posts.getFeedPosts, {});
+  const { isAuthenticated } = useConvexAuth();
+
+  const posts = useQuery(api.posts.getFeedPosts, isAuthenticated ? {} : 'skip');
 
   if(posts === undefined) return <Loader />;
   

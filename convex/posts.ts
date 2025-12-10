@@ -166,14 +166,24 @@ export const deletePost = mutation({
     for (const bookmark of bookmarks) {
       await ctx.db.delete(bookmark._id);
     }
+
+    // 7. Видалення пов'язаних повідомлень
+    const notifications = await ctx.db
+      .query("notifications")
+      .withIndex("by_post", (q) => q.eq("postId", args.postId))
+      .collect();
  
-    // 7. Видалення файлу зі Storage
+    for (const notification of notifications) {
+      await ctx.db.delete(notification._id);
+    }
+ 
+    // 8. Видалення файлу зі Storage
     await ctx.storage.delete(post.storageId);
  
-    // 8. Видалення посту
+    // 9. Видалення посту
     await ctx.db.delete(args.postId);
  
-    // 9. Зменшення лічильника постів користувача
+    // 10. Зменшення лічильника постів користувача
     await ctx.db.patch(currentUser._id, {
       posts: Math.max(0, (currentUser.posts || 1) - 1),
     });

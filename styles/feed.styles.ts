@@ -57,6 +57,22 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     textAlign: "center",
   },
+  addStoryButton: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    zIndex: 10,
+  },
+  addStoryButtonBackground: {
+    position: "absolute",
+    top: 5,
+    left: 5,
+    right: 5,
+    bottom: 5,
+    backgroundColor: COLORS.background,
+    borderRadius: 10,
+    zIndex: -1,
+  },
   post: {
     marginBottom: 16,
   },

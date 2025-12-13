@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/theme";
 import { formatDistanceToNow } from "date-fns";
 import { uk } from "date-fns/locale";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface NotificationProps {
   notification: {
@@ -28,11 +29,11 @@ export function Notification({notification}: NotificationProps) {
     const getIcon = () => {
         switch (notification.type) {
             case "like":
-                return { name: "heart", color: "#FF3B30" };
+                return { name: "heart", color: COLORS.secondary };
             case "comment":
                 return { name: "chatbubble", color: "#34C759" };
             case "follow":
-                return { name: "person-add", color: "#5856D6" };
+                return { name: "person-add", color: COLORS.primary };
             default:
                 return { name: "notifications", color: COLORS.primary };
         }
@@ -56,7 +57,7 @@ export function Notification({notification}: NotificationProps) {
     return (
         <View style={styles.notificationItem}>
             <View style={styles.notificationContent}>
-                <Link href={`/(tabs)/notifications`} asChild>
+                <Link href={`/user/${notification.sender._id}`} asChild>
                     <TouchableOpacity style={styles.avatarContainer}>
                         <Image
                             source={notification.sender.image}
@@ -71,7 +72,7 @@ export function Notification({notification}: NotificationProps) {
                 </Link>
                 
                 <View style={styles.notificationInfo}>
-                    <Link href={`/(tabs)/notifications`} asChild>
+                    <Link href={`/user/${notification.sender._id}`} asChild>
                         <TouchableOpacity>
                             <Text style={styles.username}>{notification.sender.username}</Text>
                         </TouchableOpacity>

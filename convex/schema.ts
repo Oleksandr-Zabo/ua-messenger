@@ -62,4 +62,15 @@ export default defineSchema({
     .index("by_post", ["postId"])
     .index("by_users_and_post", ["userId", "postId"]),
 
+  //stories table
+  stories: defineTable({
+  userId: v.id("users"),
+  imageUrl: v.string(),
+  storageId: v.id("_storage"),
+  expiresAt: v.number(), // timestamp коли story закінчується
+  views: v.number(),
+})
+  .index("by_user", ["userId"])
+  .index("by_expires", ["expiresAt"]),
+
 });

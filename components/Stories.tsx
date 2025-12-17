@@ -6,9 +6,10 @@ import { Story } from "./Story";
 import * as ImagePicker from "expo-image-picker";
 import { fetch } from "expo/fetch";
 import { File } from "expo-file-system";
-import { useState } from "react";
+import React, { useState } from "react";
 import { StoryViewer } from "./StoryViewer";
 import { Id } from "@/convex/_generated/dataModel";
+import { LinearGradient } from "expo-linear-gradient";
 
 export const StoriesSection = () => {
   const stories = useQuery(api.users.getStoriesUsers);
@@ -64,36 +65,38 @@ export const StoriesSection = () => {
 
   return (
     <View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.storiesContainer}
-      >
-        {stories.map((story) => (
-          <Story
-            key={story.id}
-            story={story}
-            onPress={() => {
-              if (story.username === "You" && !story.hasStory) {
-                handleCreateStory();
-              } else if (story.hasStory) {
-                setSelectedStoryUser(story.id as Id<"users">);
-              }
-            }}
-            onAddStory={() => {
-              if (story.username === "You") {
-                handleCreateStory();
-              }
-            }}
+      <LinearGradient colors={['white', 'black']}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.storiesContainer}
+        >
+          {stories.map((story) => (
+            <Story
+              key={story.id}
+              story={story}
+              onPress={() => {
+                if (story.username === "You" && !story.hasStory) {
+                  handleCreateStory();
+                } else if (story.hasStory) {
+                  setSelectedStoryUser(story.id as Id<"users">);
+                }
+              }}
+              onAddStory={() => {
+                if (story.username === "You") {
+                  handleCreateStory();
+                }
+              }}
+            />
+          ))}
+        </ScrollView>
+        {selectedStoryUser && (
+          <StoryViewer
+            userId={selectedStoryUser}
+            onClose={() => setSelectedStoryUser(null)}
           />
-        ))}
-      </ScrollView>
-      {selectedStoryUser && (
-        <StoryViewer
-          userId={selectedStoryUser}
-          onClose={() => setSelectedStoryUser(null)}
-        />
-      )}
+        )}
+      </LinearGradient>
     </View>
   );
 };

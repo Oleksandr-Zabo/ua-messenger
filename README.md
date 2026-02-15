@@ -1,50 +1,70 @@
-# Welcome to your Expo app 👋
+# UA Messenger
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+UA Messenger is a cross-platform social messaging and feed app built with Expo and React Native. It features user authentication, posting with images and captions, real-time notifications, and interactive social elements.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **User Authentication:** Secure sign-in, registration, and session management with Clerk.
+- **Feed & Posts:** View a timeline of posts from all users, each post supporting images, captions, likes, bookmarks, and comments.
+- **Stories:** An Instagram-like stories section for ephemeral content.
+- **Notifications:** Real-time notifications for:
+  - Likes on your posts
+  - New comments on your posts
+  - New followers
+- **Bookmarking:** Save posts to revisit later.
+- **Profile Pages:** User profiles with their posts and avatar.
+- **Mobile-First:** Runs on iOS & Android (supports emulators and Expo Go).
 
+## Getting Started
+
+1. **Install dependencies:**
    ```bash
    npm install
    ```
 
-2. Start the app
-
+2. **Start the app:**
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+   You'll have options to open the app in:
+   - Android emulator
+   - iOS simulator
+   - Expo Go
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+3. **Project Structure:**
+   - Main app directory: `/app`
+   - Convex backend functions: `/convex`
+   - UI components: `/components`
+   - Styles and themes: `/constants`, `/styles`
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+4. **Reset to a fresh project:**
+   ```bash
+   npm run reset-project
+   ```
 
-## Get a fresh project
+## Core Technologies
 
-When you're ready, run:
+- **React Native** (Expo, TypeScript)
+- **Convex** (serverless backend API and persistence)
+- **Clerk** (user authentication)
+- **Expo Router** (file-based navigation)
+- **Expo Plugins:** Image picker, secure store, splash screens, status bar, and more
 
-```bash
-npm run reset-project
-```
+## Development
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- Add or update code in the `/app` directory
+- Backend (database, business logic) in `/convex`
+- Styles live in `/styles` and `/constants`
+- See `package.json` for all available scripts
 
 ## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+- [Expo documentation](https://docs.expo.dev/)
+- [Convex documentation](https://docs.convex.dev/)
+- [Clerk documentation](https://clerk.dev/docs/)
+- [React Native](https://reactnative.dev/)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+**Contributions are welcome!** Open issues or pull requests to help improve this messenger app for the Ukrainian community.
